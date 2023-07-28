@@ -46,7 +46,7 @@ export GRADLE_BUILD_CACHE_PASSWORD
 
 if [[ "${USE_LUCENE_SNAPSHOT_CREDS:-}" == "true" ]]; then
   # TODO need to migrate these credentials
-  data=$(vault read -format=json aws-elastic/creds/lucene-snapshots)
+  data=$(vault read -format=json aws-elastic-ci-prod/creds/lucene-snapshots)
 
   AWS_ACCESS_KEY_ID=$(echo "$data" | jq -r .data.access_key)
   export AWS_ACCESS_KEY_ID
