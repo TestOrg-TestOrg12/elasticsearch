@@ -10,4 +10,4 @@ VAULT_SECRET_ID=$(vault read -field=secret-id secret/ci/elastic-elasticsearch/le
 VAULT_ADDR=https://secrets.elastic.co:8200
 VAULT_TOKEN=$(vault write -field=token auth/approle/login role_id=$VAULT_ROLE_ID secret_id=$VAULT_SECRET_ID)
 
-vault read -format=json aws-elastic-ci-prod/creds/lucene-snapshots
+vault read -format=json aws-elastic/creds/lucene-snapshots
