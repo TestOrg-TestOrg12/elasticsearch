@@ -45,7 +45,7 @@ GRADLE_BUILD_CACHE_PASSWORD=$(vault read -field=password secret/ci/elastic-elast
 export GRADLE_BUILD_CACHE_PASSWORD
 
 if [[ "${USE_LUCENE_SNAPSHOT_CREDS:-}" == "true" ]]; then
-  data=$(vault read -format=json aws-elastic-ci-prod/creds/lucene-snapshots)
+  data=$(.buildkite/scripts/lucene-snapshot/get-credentials.sh)
 
   AWS_ACCESS_KEY_ID=$(echo "$data" | jq -r .data.access_key)
   export AWS_ACCESS_KEY_ID
