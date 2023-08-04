@@ -22,4 +22,5 @@ git config --global user.name elasticmachine
 git config --global user.email '15837671+elasticmachine@users.noreply.github.com'
 
 git add build-tools-internal/version.properties
+git commit -m "[Automated] Update Lucene snapshot to $LUCENE_REVISION"
 git push origin "$BUILDKITE_BRANCH"
