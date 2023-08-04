@@ -7,9 +7,13 @@ echo --- Update Lucene snapshot in Elasticsearch
 # TODO ability to pass in
 LUCENE_REVISION=SNAPSHOT-$(buildkite-agent meta-data get lucene-snapshot-revision)
 
+echo "Lucene Revision: $LUCENE_REVISION"
+
 # Replace `lucene = <version>` string in version.properties
 sed -E "s/^(lucene *= *[^ ]*  *).*\$/\1$LUCENE_REVISION/" build-tools-internal/version.properties > new-version.properties
 mv new-version.properties build-tools-internal/version.properties
+
+git status
 
 git config --global user.name elasticmachine
 git config --global user.email '15837671+elasticmachine@users.noreply.github.com'
