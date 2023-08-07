@@ -6,14 +6,16 @@ echo --- Building Lucene snapshot
 
 # TODO custom branches
 cd ..
-git clone git@github.com:apache/lucene.git --branch main --single-branch --depth 1
+git clone git@github.com:apache/lucene.git --branch branch_9x --single-branch --depth 1
 cd lucene
 
-REVISION=$(git rev-parse --short HEAD)
-echo "Lucene Revision: $REVISION"
+LUCENE_SHA=$(git rev-parse --short HEAD)
+echo "Lucene Revision: $LUCENE_SHA"
 
 ./gradlew localSettings
-./gradlew clean mavenToLocal -Dversion.suffix="SNAPSHOT-$REVISION" -Dmaven.repo.local="$(pwd)/build/maven-local"
+./gradlew clean mavenToLocal -Dversion.suffix="SNAPSHOT-$LUCENE_SHA" -Dmaven.repo.local="$(pwd)/build/maven-local"
+
+LUCENE_SNAPSHOT_VERSION=$(ls -d build/maven-local/org/apache/lucene/lucene-core/*/ | xargs basename)
 
 ## TODO move aws install to image build
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -21,9 +23,10 @@ unzip awscliv2.zip
 sudo ./aws/install
 rm -rf awscliv2.zip aws
 
-aws s3 sync build/maven-local/ "s3://download.elasticsearch.org/lucenesnapshots/$REVISION/" --acl public-read
+aws s3 sync build/maven-local/ "s3://download.elasticsearch.org/lucenesnapshots/$LUCENE_SHA/" --acl public-read
 
-buildkite-agent meta-data set lucene-snapshot-revision "$REVISION"
+buildkite-agent meta-data set lucene-snapshot-sha "$LUCENE_SHA"
+buildkite-agent meta-data set lucene-snapshot-version "$LUCENE_SNAPSHOT_VERSION"
 
 cd "$WORKSPACE"
 
