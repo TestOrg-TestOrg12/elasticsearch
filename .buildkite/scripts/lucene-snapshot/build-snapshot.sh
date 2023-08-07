@@ -13,7 +13,7 @@ LUCENE_SHA=$(git rev-parse --short HEAD)
 echo "Lucene Revision: $LUCENE_SHA"
 
 ./gradlew localSettings
-./gradlew clean mavenToLocal -Dversion.suffix="SNAPSHOT-$LUCENE_SHA" -Dmaven.repo.local="$(pwd)/build/maven-local"
+./gradlew clean mavenToLocal -Dversion.suffix="snapshot-$LUCENE_SHA" -Dmaven.repo.local="$(pwd)/build/maven-local"
 
 LUCENE_SNAPSHOT_VERSION=$(ls -d build/maven-local/org/apache/lucene/lucene-core/*/ | xargs basename)
 
