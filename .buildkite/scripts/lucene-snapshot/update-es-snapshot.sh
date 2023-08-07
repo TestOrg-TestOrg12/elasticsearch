@@ -16,7 +16,7 @@ git pull --ff-only origin "$BUILDKITE_BRANCH"
 sed -E "s/^(lucene *= *[^ ]*  *).*\$/\1$LUCENE_SNAPSHOT_VERSION/" build-tools-internal/version.properties > new-version.properties
 mv new-version.properties build-tools-internal/version.properties
 
-python .buildkite/scripts/lucene-snapshot/remove-verification-metadata.py
+python3 .buildkite/scripts/lucene-snapshot/remove-verification-metadata.py
 ./gradlew --write-verification-metadata sha256
 
 if git diff-index --quiet HEAD --; then
