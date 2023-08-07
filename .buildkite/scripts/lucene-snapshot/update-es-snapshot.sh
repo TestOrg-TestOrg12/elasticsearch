@@ -16,11 +16,17 @@ git pull --ff-only origin "$BUILDKITE_BRANCH"
 sed -E "s/^(lucene *= *[^ ]*  *).*\$/\1$LUCENE_SNAPSHOT_VERSION/" build-tools-internal/version.properties > new-version.properties
 mv new-version.properties build-tools-internal/version.properties
 
-git status
+python .buildkite/scripts/lucene-snapshot/remove-verification-metadata.py
+./gradlew --write-verification-metadata sha256
 
-git config --global user.name elasticmachine
-git config --global user.email '15837671+elasticmachine@users.noreply.github.com'
+if git diff-index --quiet HEAD --; then
+  echo 'No changes to commit.'
+else
+  git config --global user.name elasticmachine
+  git config --global user.email '15837671+elasticmachine@users.noreply.github.com'
 
-git add build-tools-internal/version.properties
-git commit -m "[Automated] Update Lucene snapshot to $LUCENE_SNAPSHOT_VERSION"
-git push origin "$BUILDKITE_BRANCH"
+  git add build-tools-internal/version.properties
+  git add gradle/verification-metadata.xml
+  git commit -m "[Automated] Update Lucene snapshot to $LUCENE_SNAPSHOT_VERSION"
+  git push origin "$BUILDKITE_BRANCH"
+fi
