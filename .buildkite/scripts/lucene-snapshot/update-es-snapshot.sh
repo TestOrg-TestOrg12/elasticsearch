@@ -5,7 +5,7 @@ set -euo pipefail
 echo --- Update Lucene snapshot in Elasticsearch
 
 # TODO ability to pass in
-LUCENE_SNAPSHOT_VERSION=SNAPSHOT-$(buildkite-agent meta-data get lucene-snapshot-version)
+LUCENE_SNAPSHOT_VERSION=$(buildkite-agent meta-data get lucene-snapshot-version)
 
 echo "Lucene Snapshot Version: $LUCENE_SNAPSHOT_VERSION"
 
