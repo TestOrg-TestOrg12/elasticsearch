@@ -12,7 +12,7 @@ echo "Lucene Revision: $LUCENE_REVISION"
 git checkout "$BUILDKITE_BRANCH"
 git pull --ff-only origin "$BUILDKITE_BRANCH"
 
-# Replace `lucene = <version>` string in version.properties
+# Replace `lucene = <version>` string in version.properties and maintain the same indentation
 sed -E "s/^(lucene *= *[^ ]*  *).*\$/\1$LUCENE_REVISION/" build-tools-internal/version.properties > new-version.properties
 mv new-version.properties build-tools-internal/version.properties
 
